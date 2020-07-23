@@ -1,0 +1,117 @@
+########################
+####    FUNCTIONS   ####
+########################
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+
+function tre() {
+	tree -aC -I '.git|node_modules' --dirsfirst "$@" | less -FRNX
+}
+
+# Create a new directory or directories and dives into it. it does not acepts arguments.
+# function mkcd() {
+#     mkdir -p -- "$1" && cd -P -- "$1"
+# }
+
+# Create a new directory and enter it, accepts arguments
+function mkd() {
+	mkdir -p "$@" && cd "$_"
+}
+
+# Tell me where I am in a polite way
+
+function whereami {
+    echo "I am in this nice directory: $(pwd)"
+}
+
+# cd's in the directory and ls its constents, the classic 2 for 1
+function cdl {
+    cd "$1"
+    ls -lACF
+}
+
+# Usage up#number_of_directories_you_want_to_go_up
+function up() {
+    local cdir="$(pwd)"
+    if [[ "${1}" == "" ]]; then
+        cdir="$(dirname "${cdir}")"
+    elif ! [[ "${1}" =~ ^[0-9]+$ ]]; then
+        echo "Error: argument must be a number"
+    elif ! [[ "${1}" -gt "0" ]]; then
+        echo "Error: argument must be positive"
+    else
+        for ((i=0; i<${1}; i++)); do
+            local ncdir="$(dirname "${cdir}")"
+            if [[ "${cdir}" == "${ncdir}" ]]; then
+                break
+            else
+                cdir="${ncdir}"
+            fi
+        done
+    fi
+    cd "${cdir}"
+}
+
+# This are handy web dev functions so you don't have to have so many terminal
+#tabs open.
+# Set sass watching in the backgroun with nohup and redirect errors to a file
+function sassme() {
+    nohup sass --watch scss:css &
+}
+
+# Stop sass watcher
+function sassout() {
+    kill -15 $(ps -ef | grep sass | grep -v grep | awk '{print $2}')
+}
+
+# Keep this to remember a good way to find a process and stop it.
+# 15 means SIGTERM (gentle) and 9 SIGKILL (hard)
+# function servout() {
+#     kill -15 $(ps -ef | grep http.server | grep -v grep | awk '{print $2}')
+# }
+
+# source reload .zshrc and .oh-my-zsh
+function src() {
+        local cache="$ZSH_CACHE_DIR"
+        autoload -U compinit zrecompile
+        compinit -i -d "$cache/zcomp-$HOST"
+
+        for f in ${ZDOTDIR:-~}/.zshrc "$cache/zcomp-$HOST"; do
+                zrecompile -p $f && command rm -f $f.zwc.old
+        done
+
+        # Use $SHELL if available; remove leading dash if login shell
+        [[ -n "$SHELL" ]] && exec ${SHELL#-} || exec zsh
+}
+
+function lg()
+{
+    export LAZYGIT_NEW_DIR_FILE=~/.lazygit/newdir
+
+    lazygit "$@"
+
+    if [ -f $LAZYGIT_NEW_DIR_FILE ]; then
+            cd "$(cat $LAZYGIT_NEW_DIR_FILE)"
+            rm -f $LAZYGIT_NEW_DIR_FILE > /dev/null
+    fi
+}
+
+# Git diff + fzf
+# taken from: https://medium.com/@GroundControl/better-git-diffs-with-fzf-89083739a9cb
+# see also: https://junegunn.kr/2015/03/browsing-git-commits-with-fzf
+# Continue idea and create a little script
+function gd() {
+  preview="git diff $@ --color=always -- {-1}"
+  git diff $@ --name-only | fzf -m --ansi --preview $preview
+}
+
+function gitcp() {
+    git commit -am "$1" && git push
+}
+
+function make50() {
+    clang -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow "${1}.c"  -lcs50 -lm -o "${1}"
+}

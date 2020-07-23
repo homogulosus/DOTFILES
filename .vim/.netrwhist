@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/Users/r/vimtest'
+let g:netrw_dirhist_6='/Users/r/Library/Application Support/jesseduffield/lazygit'
+let g:netrw_dirhist_5='/Users/r/Library/Application Support/jesseduffield'
+let g:netrw_dirhist_4='/Users/r'
+let g:netrw_dirhist_3='/Users/r/Library/Application Support/jesseduffield/lazygit'
+let g:netrw_dirhist_2='/Users/r/Library/Application Support/jesseduffield'
+let g:netrw_dirhist_1='/Users/r/Library/Application Support'
+let g:netrw_dirhist_0='/Users/r/Plugins/indispensable/plugin'
+let g:netrw_dirhist_9='/Users/r/Plugins/indispensable'
+let g:netrw_dirhist_8='/Users/r/Plugins'

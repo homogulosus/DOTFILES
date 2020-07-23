@@ -1,0 +1,135 @@
+###############
+# zsh aliases #
+###############
+
+# Makes file executable
+alias chmox='chmod +x $@'
+
+# Brew Cask and Brew install
+alias cask='brew cask install'
+alias brewin='brew install'
+alias brewout='brew uninstall'
+
+# Updates brew and npm
+alias brewup="brew -v update; brew upgrade --force-bottle; brew doctor; npm doctor; npm prune"
+
+# Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
+alias sysup='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; brew cask upgrade; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
+
+# ls, the common ones I use a lot shortened for rapid fire usage
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+alias lt='ls -ltFh'   #long list,sorted by date,show type,human readable
+alias ldot='ls -ld .*'
+alias lS='ls -1FSsh'  #Size
+alias lart='ls -1Fcart'
+alias lrt='ls -1Fcrt'
+alias ll='ls -lhA'
+alias lsd="ls -lF ${colorflag} | grep --color=auto '^d'" # List only directories
+
+# internet stuff
+alias ip='ipconfig getifaddr en0'                                                   # local IP
+alias iip='dig +short myip.opendns.com @resolver1.opendns.com'                      # Internet IP
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"   # Show active network interfaces
+alias flush="sudo killall -HUP mDNSResponder"                                       # Flush Directory Service cache
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"     # Clean up LaunchServices to remove duplicates in the “Open With” menu
+alias f="fzf -i -m --preview 'bat {-1} --color=always'" # This is a great app fzf
+alias cleanupDS="find . -name '*.DS_Store' -type f -ls -delete" # Recursively delete `.DS_Store` files
+
+# Git
+alias g='git'
+alias GCO="git branch | fzf | sed 's/\* //g' | xargs -I '{}' git checkout {}"
+
+# Moving arround
+alias music='cd ~/Music/'
+alias dev='cd ~/Development/'
+alias sites='cd ~/Development/Sites'
+alias docs='cd ~/documentation'
+alias scrpt='cd ~/Cs/scripts'
+
+# Edits
+alias rc='${EDITOR} ~/.zshrc'
+alias ali='${EDITOR} ~/.aliases'
+alias fun='${EDITOR} ~/.functions'
+alias rcload='source ~/.zshrc'
+alias cat='bat'
+alias b='bat'
+
+# Working with files
+alias dud='du -d 1 -h'          # Show dirs size
+alias duf='du -sh *'            # Show file size
+alias fd='find . -type d -name' # Find directory
+alias ff='find . -type f -name' # Find File
+alias dirs='dirs -v'            # show stack with numbers
+alias multipull='find . -mindepth 1 -maxdepth 1 -type d -print -exec git -C {} pull \;' # Pull(update) all repos in a directory
+
+# Software
+alias v='nvim'
+alias grep='grep --color'
+alias c='calcurse'
+alias r='ranger'
+
+# Diskspace report
+alias df_report="df -P -kHl"
+
+
+# Get week number
+alias week='date +%V'
+
+# Google Chrome
+alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+# alias canary='/Applications/Google\ Chrome\ Canary.app/Contents/MacOS/Google\ Chrome\ Canary'
+
+# Empty the Trash on all mounted volumes and the main HDD.
+# Also, clear Apple’s System Logs to improve shell startup speed.
+# Finally, clear download history from quarantine. https://mths.be/bum
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+
+# Show/hide hidden files in Finder
+alias show="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+alias hide="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# Disable Spotlight
+alias spotoff="sudo mdutil -a -i off"
+# Enable Spotlight
+alias spoton="sudo mdutil -a -i on"
+
+# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
+alias silence="osascript -e 'set volume output muted true'"
+alias maxpower="osascript -e 'set volume output volume 100'"
+
+# Lock the screen (when going AFK)
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec ${SHELL} -l"
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
+# Selfexplanatory
+alias q='exit'
+
+# Starts npm live-server. for some reason the simlik got broken
+alias liveserver='/usr/local/opt/npm/bin/live-server'
+
+# How about we make our process table searchable. We can create an alias that searches our process for an argument we’ll pass:
+# ps + grep + process
+alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+# SQlite
+alias sq='sqlite3'
+
+# Sass
+alias sw='sass --watch scss:css'
+
+# Global Alias
+alias -g dt=$(date +"%m/%d/%Y").log
+
+# Better safe that sorry
+alias rm='rm -i'

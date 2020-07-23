@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+t() {
+# Here I need an Dict or something so I can give another name to the ouput. I
+# don't want to print out long names. also I want the hability of changing the
+# tz easily.
+    echo
+    print -c "ZONE" " " " " " " "  DATE" "\t TIME"
+    echo "================================================================"
+    for tz in Europe/Madrid US/Eastern US/Central US/Pacific America/Cordoba; do
+        # print -c "$tz:\t\t$(TZ=$tz date -R)"
+        print -c "$tz:" "$(TZ=$tz date -R)"
+    done
+    print -c "\nHere" "\t `date`\n"
+}
+
+t
+
+return 0

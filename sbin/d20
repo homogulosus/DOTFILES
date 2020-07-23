@@ -1,0 +1,10 @@
+#!/bin/zsh
+# It will output a rondom number from 1 to 20
+
+rand() {
+    echo $((($RANDOM % ${1:-20})+1))
+}
+
+rand
+
+return 0

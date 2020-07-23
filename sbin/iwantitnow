@@ -1,0 +1,59 @@
+#!/usr/bin/env zsh
+
+# Version: 0.1
+# Author: homogulosus
+# Date: Mon Jul 13 13:19:32 EDT 2020
+# Description: Downloads a URL recursively and recompiles html to markdown.
+
+URL=$1
+
+function down_with_site() {
+  echo $BOLD; echo "Dowloading: $URL" $RESET
+  wget \
+    --recursive \
+    --level=4 \
+    --no-netrc \
+    --page-requisites \
+    --adjust-extension \
+    --no-parent \
+    --cut-dirs=1 \
+    --no-verbose \
+    --convert-links $URL
+
+    # --no-clobber \
+    # --base=$URL \
+}
+
+function html_markdown() {
+  # TODO find only in the newly created folder
+  echo $GREEN; echo "HTML 2 MARKDOWN >>>" $RESET
+  find . -name "*.ht*" | while read i; do pandoc -f html -t markdown "$i" -o "${i%.*}.md"; done
+}
+
+function clean_up() {
+  echo $GREEN; echo "Cleaning UP >>> \n"$RESET
+  find . -iname "*.html" -delete
+  # find . -iname "*html*" -exec rename .html.md .md '{}' \;
+}
+
+function setup_color() {
+	# Only use colors if connected to a terminal
+	if [ -t 1 ]; then
+		GREEN=$(printf '\033[32m')
+		BOLD=$(printf '\033[1m')
+		RESET=$(printf '\033[m')
+	else
+		GREEN=""
+		BOLD=""
+		RESET=""
+	fi
+}
+
+function main() {
+  setup_color
+  down_with_site "$@"
+  html_markdown
+  clean_up
+}
+
+main "$@"

@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# Weatter function. Shows weather in Brooklyn in this case.
+function wttr() {
+    # change Paris to your default location
+    local request="wttr.in/${1-Brooklyn, United States}"
+    [ "$(tput cols)" -lt 125 ] && request+='?Fn'
+    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+}
+
+wttr
+
+return 0

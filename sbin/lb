@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+# Very simple Loog Book, from a blog.
+
+funtion lb() {
+    ${EDITOR} ~/logbook/$(date '+%Y-%m-%d').md
+}
+
+lb
+
+return 0
